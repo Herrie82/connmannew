@@ -1,16 +1,15 @@
 [Unit]
 Description=Connection service
-Requires=@CONNMAN_SERVICE_REQUIRES@
-After=@CONNMAN_SERVICE_AFTER@ network-pre.target
+Requires=dbus.socket
+After=dbus.socket android-system.service
 Before=network.target remote-fs-pre.target
 Wants=network.target remote-fs-pre.target
 
 [Service]
 Type=notify
 Restart=always
-EnvironmentFile=-/etc/tracing/connman/connman.tracing
-EnvironmentFile=-/etc/sysconfig/connman
-ExecStart=@sbindir@/connmand -n -W nl80211 --nobacktrace --systemd $TRACING $SYSCONF_ARGS
+EnvironmentFile=/etc/connman/environment.conf
+ExecStart=@sbindir@/connmand -n $EXTRA_PARAM
 StandardOutput=null
 
 [Install]
