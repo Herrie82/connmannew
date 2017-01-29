@@ -1,0 +1,17 @@
+[Unit]
+Description=Connection service
+Requires=@CONNMAN_SERVICE_REQUIRES@
+After=@CONNMAN_SERVICE_AFTER@ network-pre.target
+Before=network.target remote-fs-pre.target
+Wants=network.target remote-fs-pre.target
+
+[Service]
+Type=notify
+Restart=always
+EnvironmentFile=-/etc/tracing/connman/connman.tracing
+EnvironmentFile=-/etc/sysconfig/connman
+ExecStart=@sbindir@/connmand -n -W nl80211 --nobacktrace --systemd $TRACING $SYSCONF_ARGS
+StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target

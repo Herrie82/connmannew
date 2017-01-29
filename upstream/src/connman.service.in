@@ -1,0 +1,15 @@
+[Unit]
+Description=Connection service
+After=dbus.service network-pre.target
+Before=network.target remote-fs-pre.target
+Wants=network.target remote-fs-pre.target
+
+[Service]
+Type=dbus
+BusName=net.connman
+Restart=on-failure
+ExecStart=@sbindir@/connmand -n
+StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target
